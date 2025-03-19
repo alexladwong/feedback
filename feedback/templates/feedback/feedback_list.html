@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-top: 20px;
+            color: #4b6eaf;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 10px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"], select, button[type="submit"] {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: #4b6eaf;
+        }
+
+        button[type="submit"] {
+            background-color: #4b6eaf;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #3e5d92;
+        }
+
+        input[type="text"], select {
+            width: 200px;
+        }
+
+        button[type="submit"] {
+            width: 120px;
+        }
+
+        @media (max-width: 768px) {
+            input[type="text"], select {
+                width: 100%;
+            }
+
+            button[type="submit"] {
+                width: 100%;
+            }
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 10px;
+        }
+
+        ul li {
+            background-color: #fff;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        ul li:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        ul li a {
+            color: #4b6eaf;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            color: #4b6eaf;
+            padding: 5px 15px;
+            border-radius: 5px;
+            margin: 0 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination a:hover {
+            background-color: #4b6eaf;
+            color: white;
+        }
+
+        .pagination .current {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .step-links {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .pagination a {
+                padding: 8px 15px;
+            }
+
+            .pagination {
+                font-size: 0.9rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Feedback List</h1>
+    <form method="get" action="">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search feedback...">
+        <select name="sort">
+            <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>Sort by Date</option>
+            <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Sort by Rating</option>
+        </select>
+        <button type="submit">Sort</button>
+    </form>
+    <ul>
+        {% for feedback in page_obj %}
+            <li>
+                {{ feedback.user_name }}: {{ feedback.comment }} (Rating: {{ feedback.rating }}) ({{ feedback.created_at }})
+                {% if feedback.file_upload %}
+                    <br><a href="{{ feedback.file_upload.url }}">Download File</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&q={{ query }}&sort={{ sort_by }}">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}&sort={{ sort_by }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&q={{ query }}&sort={{ sort_by }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}&sort={{ sort_by }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>

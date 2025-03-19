@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Feedback</title>
+</head>
+<body>
+    <h1>Delete Feedback</h1>
+    <p>Are you sure you want to delete your feedback for {{ feedback.product_service }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, delete it</button>
+    </form>
+    <a href="{% url 'user_dashboard' %}">Cancel</a>
+</body>
+</html>

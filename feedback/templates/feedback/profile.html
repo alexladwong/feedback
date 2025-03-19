@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #4b6eaf;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #e8efff;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status {
+            font-weight: bold;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+        }
+
+        .active {
+            background-color: #4CAF50;
+        }
+
+        .inactive {
+            background-color: #d9534f;
+        }
+
+        .no-subscription {
+            color: #888;
+            font-style: italic;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c9302c;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            li {
+                font-size: 0.9rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .status {
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome, {{ user.username }}</h1>
+
+        <h2>Your Subscriptions</h2>
+        <ul>
+            {% for subscription in subscriptions %}
+                <li>
+                    {{ subscription.start_date }}  
+                    <span class="status {% if subscription.is_active %}active{% else %}inactive{% endif %}">
+                        {% if subscription.is_active %} Active {% else %} Inactive {% endif %}
+                    </span>
+                </li>
+            {% empty %}
+                <li class="no-subscription">No subscriptions found.</li>
+            {% endfor %}
+        </ul>
+
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
+
+</body>
+</html>

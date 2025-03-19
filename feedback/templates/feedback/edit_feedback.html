@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Feedback</title>
+</head>
+<body>
+    <h1>Edit Feedback</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="comment">Comment:</label>
+        <textarea name="comment" required>{{ feedback.comment }}</textarea><br>
+        <label for="rating">Rating (1-5):</label>
+        <input type="number" name="rating" min="1" max="5" value="{{ feedback.rating }}" required><br>
+        <button type="submit">Update</button>
+    </form>
+    <a href="{% url 'user_dashboard' %}">Cancel</a>
+</body>
+</html>

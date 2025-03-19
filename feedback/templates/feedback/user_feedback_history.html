@@ -1,0 +1,18 @@
+<!-- feedback/templates/feedback/user_feedback_history.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Feedback History</title>
+</head>
+<body>
+    <h1>Your Feedback History</h1>
+    <ul>
+        {% for feedback in feedbacks %}
+            <li>{{ feedback.product_service }}: {{ feedback.comment }} (Rating: {{ feedback.rating }}) ({{ feedback.created_at }})</li>
+        {% empty %}
+            <li>No feedback found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'feedback_list' %}">Back to Feedback List</a>
+</body>
+</html>
